@@ -448,5 +448,18 @@ module Lunar
       '黄道' => '吉',
       '黑道' => '凶'
     }.freeze
+
+    def self.get_time_zhi_index(hm)
+      return 0 if hm.nil?
+      hm = hm[0, 5] if hm.length > 5
+      x = 1
+      (1..21).step(2) do |i|
+        hour_start = format('%02d:00', i)
+        hour_end = format('%02d:59', i + 1)
+        return x if hm >= hour_start && hm <= hour_end
+        x += 1
+      end
+      0
+    end
   end
 end
