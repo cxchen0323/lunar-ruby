@@ -102,8 +102,10 @@ module Lunar
     end
 
     def to_string
-      get_number + get_color + get_wu_xing + get_name_in_bei_dou
+      "#{get_number}#{get_color}#{get_wu_xing}#{get_name_in_bei_dou}"
     end
+
+    alias to_s to_string
 
     def to_full_string
       s = get_number
@@ -137,7 +139,5 @@ module Lunar
       s += ']'
       s
     end
-
-    alias to_s to_string
   end
 end
