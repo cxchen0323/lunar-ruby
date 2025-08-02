@@ -1,10 +1,7 @@
-require_relative 'util/lunar_util'
-
 module Lunar
   class JieQi
     attr_reader :name, :solar
-    attr_accessor :jie, :qi
-
+    
     def initialize(name, solar)
       @name = name
       @jie = false
@@ -12,14 +9,14 @@ module Lunar
       @solar = solar
       set_name(name)
     end
-
+    
     def get_name
       @name
     end
-
+    
     def set_name(name)
       @name = name
-      LunarUtil::JIE_QI.each_with_index do |jq, i|
+      Lunar::JIE_QI.each_with_index do |jq, i|
         if name == jq
           if i.even?
             @qi = true
@@ -30,27 +27,31 @@ module Lunar
         end
       end
     end
-
+    
     def get_solar
       @solar
     end
-
+    
     def set_solar(solar)
       @solar = solar
     end
-
-    def is_jie?
+    
+    def jie?
       @jie
     end
-
-    def is_qi?
+    
+    alias is_jie jie?
+    
+    def qi?
       @qi
     end
-
+    
+    alias is_qi qi?
+    
     def to_string
       @name
     end
-
+    
     alias to_s to_string
   end
 end
