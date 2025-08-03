@@ -1,5 +1,8 @@
 require 'minitest/autorun'
 require 'minitest/spec'
 
-# Add the lib directory to the load path
+# Ensure we're loading our library files
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+
+# Require base lunar module
+require 'lunar'
