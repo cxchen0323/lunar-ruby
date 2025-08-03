@@ -1,171 +1,206 @@
 # -*- coding: utf-8 -*-
-from . import NineStar
-from .util import LunarUtil
+require_relative 'nine_star'
+require_relative 'util/lunar_util'
 
 
-class LunarTime:
-    """
-    时辰
-    """
+class LunarTime
+  # 时辰
 
-    def __init__(self, lunar_year, lunar_month, lunar_day, hour, minute, second):
-        from . import Lunar
-        self.__lunar = Lunar.fromYmdHms(lunar_year, lunar_month, lunar_day, hour, minute, second)
-        self.__zhiIndex = LunarUtil.getTimeZhiIndex("%02d:%02d" % (hour, minute))
-        self.__ganIndex = (self.__lunar.getDayGanIndexExact() % 5 * 2 + self.__zhiIndex) % 10
+  def initialize(lunar_year, lunar_month, lunar_day, hour, minute, second)
+    require_relative 'lunar'
+    @lunar = Lunar.fromYmdHms(lunar_year, lunar_month, lunar_day, hour, minute, second)
+    @zhiIndex = LunarUtil.getTimeZhiIndex("%02d:%02d" % [hour, minute])
+    @ganIndex = (@lunar.getDayGanIndexExact % 5 * 2 + @zhiIndex) % 10
+  end
 
-    @staticmethod
-    def fromYmdHms(lunar_year, lunar_month, lunar_day, hour, minute, second):
-        return LunarTime(lunar_year, lunar_month, lunar_day, hour, minute, second)
+  def self.fromYmdHms(lunar_year, lunar_month, lunar_day, hour, minute, second)
+    LunarTime.new(lunar_year, lunar_month, lunar_day, hour, minute, second)
+  end
 
-    def getGan(self):
-        return LunarUtil.GAN[self.__ganIndex + 1]
+  def getGan
+    LunarUtil::GAN[@ganIndex + 1]
+  end
 
-    def getZhi(self):
-        return LunarUtil.ZHI[self.__zhiIndex + 1]
+  def getZhi
+    LunarUtil::ZHI[@zhiIndex + 1]
+  end
 
-    def getGanZhi(self):
-        return "%s%s" % (self.getGan(), self.getZhi())
+  def getGanZhi
+    "%s%s" % [getGan, getZhi]
+  end
 
-    def getShengXiao(self):
-        return LunarUtil.SHENGXIAO[self.__zhiIndex + 1]
+  def getShengXiao
+    LunarUtil::SHENGXIAO[@zhiIndex + 1]
+  end
 
-    def getPositionXi(self):
-        return LunarUtil.POSITION_XI[self.__ganIndex + 1]
+  def getPositionXi
+    LunarUtil::POSITION_XI[@ganIndex + 1]
+  end
 
-    def getPositionXiDesc(self):
-        return LunarUtil.POSITION_DESC[self.getPositionXi()]
+  def getPositionXiDesc
+    LunarUtil::POSITION_DESC[getPositionXi]
+  end
 
-    def getPositionYangGui(self):
-        return LunarUtil.POSITION_YANG_GUI[self.__ganIndex + 1]
+  def getPositionYangGui
+    LunarUtil::POSITION_YANG_GUI[@ganIndex + 1]
+  end
 
-    def getPositionYangGuiDesc(self):
-        return LunarUtil.POSITION_DESC[self.getPositionYangGui()]
+  def getPositionYangGuiDesc
+    LunarUtil::POSITION_DESC[getPositionYangGui]
+  end
 
-    def getPositionYinGui(self):
-        return LunarUtil.POSITION_YIN_GUI[self.__ganIndex + 1]
+  def getPositionYinGui
+    LunarUtil::POSITION_YIN_GUI[@ganIndex + 1]
+  end
 
-    def getPositionYinGuiDesc(self):
-        return LunarUtil.POSITION_DESC[self.getPositionYinGui()]
+  def getPositionYinGuiDesc
+    LunarUtil::POSITION_DESC[getPositionYinGui]
+  end
 
-    def getPositionFu(self, sect=2):
-        return (LunarUtil.POSITION_FU if 1 == sect else LunarUtil.POSITION_FU_2)[self.__ganIndex + 1]
+  def getPositionFu(sect = 2)
+    (1 == sect ? LunarUtil::POSITION_FU : LunarUtil::POSITION_FU_2)[@ganIndex + 1]
+  end
 
-    def getPositionFuDesc(self, sect=2):
-        return LunarUtil.POSITION_DESC[self.getPositionFu(sect)]
+  def getPositionFuDesc(sect = 2)
+    LunarUtil::POSITION_DESC[getPositionFu(sect)]
+  end
 
-    def getPositionCai(self):
-        return LunarUtil.POSITION_CAI[self.__ganIndex + 1]
+  def getPositionCai
+    LunarUtil::POSITION_CAI[@ganIndex + 1]
+  end
 
-    def getPositionCaiDesc(self):
-        return LunarUtil.POSITION_DESC[self.getPositionCai()]
+  def getPositionCaiDesc
+    LunarUtil::POSITION_DESC[getPositionCai]
+  end
 
-    def getChong(self):
-        return LunarUtil.CHONG[self.__zhiIndex]
+  def getChong
+    LunarUtil::CHONG[@zhiIndex]
+  end
 
-    def getChongGan(self):
-        return LunarUtil.CHONG_GAN[self.__ganIndex]
+  def getChongGan
+    LunarUtil::CHONG_GAN[@ganIndex]
+  end
 
-    def getChongGanTie(self):
-        return LunarUtil.CHONG_GAN_TIE[self.__ganIndex]
+  def getChongGanTie
+    LunarUtil::CHONG_GAN_TIE[@ganIndex]
+  end
 
-    def getChongShengXiao(self):
-        chong = self.getChong()
-        for i in range(0, len(LunarUtil.ZHI)):
-            if LunarUtil.ZHI[i] == chong:
-                return LunarUtil.SHENGXIAO[i]
-        return ""
+  def getChongShengXiao
+    chong = getChong
+    (0...LunarUtil::ZHI.length).each do |i|
+      if LunarUtil::ZHI[i] == chong
+        return LunarUtil::SHENGXIAO[i]
+      end
+    end
+    ""
+  end
 
-    def getChongDesc(self):
-        return "(" + self.getChongGan() + self.getChong() + ")" + self.getChongShengXiao()
+  def getChongDesc
+    "(" + getChongGan + getChong + ")" + getChongShengXiao
+  end
 
-    def getSha(self):
-        return LunarUtil.SHA[self.getZhi()]
+  def getSha
+    LunarUtil::SHA[getZhi]
+  end
 
-    def getNaYin(self):
-        return LunarUtil.NAYIN[self.getGanZhi()]
+  def getNaYin
+    LunarUtil::NAYIN[getGanZhi]
+  end
 
-    def getTianShen(self):
-        return LunarUtil.TIAN_SHEN[(self.__zhiIndex + LunarUtil.ZHI_TIAN_SHEN_OFFSET[self.__lunar.getDayZhiExact()]) % 12 + 1]
+  def getTianShen
+    LunarUtil::TIAN_SHEN[(@zhiIndex + LunarUtil::ZHI_TIAN_SHEN_OFFSET[@lunar.getDayZhiExact]) % 12 + 1]
+  end
 
-    def getTianShenType(self):
-        return LunarUtil.TIAN_SHEN_TYPE[self.getTianShen()]
+  def getTianShenType
+    LunarUtil::TIAN_SHEN_TYPE[getTianShen]
+  end
 
-    def getTianShenLuck(self):
-        return LunarUtil.TIAN_SHEN_TYPE_LUCK[self.getTianShenType()]
+  def getTianShenLuck
+    LunarUtil::TIAN_SHEN_TYPE_LUCK[getTianShenType]
+  end
 
-    def getYi(self):
-        """
-        获取时宜
-        :return: 宜
-        """
-        return LunarUtil.getTimeYi(self.__lunar.getDayInGanZhiExact(), self.getGanZhi())
+  def getYi
+    # 获取时宜
+    # :return: 宜
+    LunarUtil.getTimeYi(@lunar.getDayInGanZhiExact, getGanZhi)
+  end
 
-    def getJi(self):
-        """
-        获取时忌
-        :return: 忌
-        """
-        return LunarUtil.getTimeJi(self.__lunar.getDayInGanZhiExact(), self.getGanZhi())
+  def getJi
+    # 获取时忌
+    # :return: 忌
+    LunarUtil.getTimeJi(@lunar.getDayInGanZhiExact, getGanZhi)
+  end
 
-    def getNineStar(self):
-        solar_ymd = self.__lunar.getSolar().toYmd()
-        jie_qi = self.__lunar.getJieQiTable()
-        asc = False
-        if jie_qi["冬至"] <= solar_ymd < jie_qi["夏至"]:
-            asc = True
-        start = 7 if asc else 3
-        day_zhi = self.__lunar.getDayZhi()
-        if day_zhi in "子午卯酉":
-            start = 1 if asc else 9
-        elif day_zhi in "辰戌丑未":
-            start = 4 if asc else 6
-        index = start + self.__zhiIndex - 1 if asc else start - self.__zhiIndex - 1
+  def getNineStar
+    solar_ymd = @lunar.getSolar.toYmd
+    jie_qi = @lunar.getJieQiTable
+    asc = false
+    if jie_qi["冬至"] <= solar_ymd && solar_ymd < jie_qi["夏至"]
+      asc = true
+    end
+    start = asc ? 7 : 3
+    day_zhi = @lunar.getDayZhi
+    if ["子", "午", "卯", "酉"].include?(day_zhi)
+      start = asc ? 1 : 9
+    elsif ["辰", "戌", "丑", "未"].include?(day_zhi)
+      start = asc ? 4 : 6
+    end
+    index = asc ? start + @zhiIndex - 1 : start - @zhiIndex - 1
 
-        if index > 8:
-            index -= 9
-        if index < 0:
-            index += 9
-        return NineStar.fromIndex(index)
+    if index > 8
+      index -= 9
+    end
+    if index < 0
+      index += 9
+    end
+    NineStar.fromIndex(index)
+  end
 
-    def getGanIndex(self):
-        return self.__ganIndex
+  def getGanIndex
+    @ganIndex
+  end
 
-    def getZhiIndex(self):
-        return self.__zhiIndex
+  def getZhiIndex
+    @zhiIndex
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
 
-    def toString(self):
-        return self.getGanZhi()
+  def toString
+    getGanZhi
+  end
 
-    def getXun(self):
-        """
-        获取时辰所在旬
-        :return: 旬
-        """
-        return LunarUtil.getXun(self.getGanZhi())
+  def getXun
+    # 获取时辰所在旬
+    # :return: 旬
+    LunarUtil.getXun(getGanZhi)
+  end
 
-    def getXunKong(self):
-        """
-        获取值时空亡
-        :return: 空亡(旬空)
-        """
-        return LunarUtil.getXunKong(self.getGanZhi())
+  def getXunKong
+    # 获取值时空亡
+    # :return: 空亡(旬空)
+    LunarUtil.getXunKong(getGanZhi)
+  end
 
-    def getMinHm(self):
-        hour = self.__lunar.getHour()
-        if hour < 1:
-            return "00:00"
-        elif hour > 22:
-            return "23:00"
-        return "%02d:00" % (hour - 1 if hour % 2 == 0 else hour)
+  def getMinHm
+    hour = @lunar.getHour
+    if hour < 1
+      return "00:00"
+    elsif hour > 22
+      return "23:00"
+    end
+    "%02d:00" % (hour % 2 == 0 ? hour - 1 : hour)
+  end
 
-    def getMaxHm(self):
-        hour = self.__lunar.getHour()
-        if hour < 1:
-            return "00:59"
-        elif hour > 22:
-            return "23:59"
-        return "%02d:59" % (hour + 1 if hour % 2 != 0 else hour)
+  def getMaxHm
+    hour = @lunar.getHour
+    if hour < 1
+      return "00:59"
+    elsif hour > 22
+      return "23:59"
+    end
+    "%02d:59" % (hour % 2 != 0 ? hour + 1 : hour)
+  end
+end

@@ -1,70 +1,69 @@
 # -*- coding: utf-8 -*-
 
 
-class JieQi:
-    """
-    节气
-    """
+class JieQi
+  # 节气
 
-    def __init__(self, name, solar):
-        self.__name = name
-        self.__jie = False
-        self.__qi = False
-        self.__solar = solar
-        self.setName(name)
+  def initialize(name, solar)
+    @name = name
+    @jie = false
+    @qi = false
+    @solar = solar
+    setName(name)
+  end
 
-    def getName(self):
-        """
-        获取名称
-        :return: 名称
-        """
-        return self.__name
+  def getName
+    # 获取名称
+    # :return: 名称
+    @name
+  end
 
-    def setName(self, name):
-        """
-        设置名称
-        :param name: 名称
-        """
-        from . import Lunar
-        self.__name = name
-        for i in range(0, len(Lunar.JIE_QI)):
-            if name == Lunar.JIE_QI[i]:
-                if i % 2 == 0:
-                    self.__qi = True
-                else:
-                    self.__jie = True
-                return
+  def setName(name)
+    # 设置名称
+    # :param name: 名称
+    require_relative 'lunar'
+    @name = name
+    (0...Lunar::JIE_QI.length).each do |i|
+      if name == Lunar::JIE_QI[i]
+        if i % 2 == 0
+          @qi = true
+        else
+          @jie = true
+        end
+        return
+      end
+    end
+  end
 
-    def getSolar(self):
-        """
-        获取阳历日期
-        :return: 阳历日期
-        """
-        return self.__solar
+  def getSolar
+    # 获取阳历日期
+    # :return: 阳历日期
+    @solar
+  end
 
-    def setSolar(self, solar):
-        """
-        设置阳历日期
-        :param solar: 阳历日期
-        """
-        self.__solar = solar
+  def setSolar(solar)
+    # 设置阳历日期
+    # :param solar: 阳历日期
+    @solar = solar
+  end
 
-    def isJie(self):
-        """
-        是否节令
-        :return: true/false
-        """
-        return self.__jie
+  def isJie
+    # 是否节令
+    # :return: true/false
+    @jie
+  end
 
-    def isQi(self):
-        """
-        是否气令
-        :return: true/false
-        """
-        return self.__qi
+  def isQi
+    # 是否气令
+    # :return: true/false
+    @qi
+  end
 
-    def toString(self):
-        return self.__name
+  def toString
+    @name
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
+end
