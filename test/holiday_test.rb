@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-import unittest
-
-from lunar_python.util import HolidayUtil
+require 'test_helper'
 
 
-class HolidayTest(unittest.TestCase):
-    def test(self):
-        holiday = HolidayUtil.getHoliday(2010, 1, 1)
-        self.assertEqual("元旦节", holiday.getName())
+class HolidayTest < Test::Unit::TestCase
+  def test
+    holiday = HolidayUtil.getHoliday(2010, 1, 1)
+    assert_equal("元旦节", holiday.getName)
 
-        HolidayUtil.fix(None, "20100101~000000000000000000000000000")
-        holiday = HolidayUtil.getHoliday(2010, 1, 1)
-        self.assertIsNone(holiday)
+    HolidayUtil.fix(nil, "20100101~000000000000000000000000000")
+    holiday = HolidayUtil.getHoliday(2010, 1, 1)
+    assert_nil(holiday)
+  end
+end
