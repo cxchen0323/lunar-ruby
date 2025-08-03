@@ -1,55 +1,57 @@
 # -*- coding: utf-8 -*-
-from ..util import LunarUtil
+require_relative '../util/lunar_util'
 
 
-class XiaoYun:
-    """
-    小运
-    """
+class XiaoYun
+  # 小运
 
-    def __init__(self, da_yun, index, forward):
-        self.__daYun = da_yun
-        self.__lunar = da_yun.getLunar()
-        self.__index = index
-        self.__year = da_yun.getStartYear() + index
-        self.__age = da_yun.getStartAge() + index
-        self.__forward = forward
+  def initialize(da_yun, index, forward)
+    @daYun = da_yun
+    @lunar = da_yun.getLunar
+    @index = index
+    @year = da_yun.getStartYear + index
+    @age = da_yun.getStartAge + index
+    @forward = forward
+  end
 
-    def getIndex(self):
-        return self.__index
+  def getIndex
+    @index
+  end
 
-    def getYear(self):
-        return self.__year
+  def getYear
+    @year
+  end
 
-    def getAge(self):
-        return self.__age
+  def getAge
+    @age
+  end
 
-    def getGanZhi(self):
-        """
-        获取干支
-        :return: 干支
-        """
-        offset = LunarUtil.getJiaZiIndex(self.__lunar.getTimeInGanZhi())
-        add = self.__index + 1
-        if self.__daYun.getIndex() > 0:
-            add += self.__daYun.getStartAge() - 1
-        offset += add if self.__forward else -add
-        size = len(LunarUtil.JIA_ZI)
-        while offset < 0:
-            offset += size
-        offset %= size
-        return LunarUtil.JIA_ZI[offset]
+  def getGanZhi
+    # 获取干支
+    # :return: 干支
+    offset = LunarUtil.getJiaZiIndex(@lunar.getTimeInGanZhi)
+    add = @index + 1
+    if @daYun.getIndex > 0
+      add += @daYun.getStartAge - 1
+    end
+    offset += @forward ? add : -add
+    size = LunarUtil::JIA_ZI.length
+    while offset < 0
+      offset += size
+    end
+    offset %= size
+    LunarUtil::JIA_ZI[offset]
+  end
 
-    def getXun(self):
-        """
-        获取所在旬
-        :return: 旬
-        """
-        return LunarUtil.getXun(self.getGanZhi())
+  def getXun
+    # 获取所在旬
+    # :return: 旬
+    LunarUtil.getXun(getGanZhi)
+  end
 
-    def getXunKong(self):
-        """
-        获取旬空(空亡)
-        :return: 旬空(空亡)
-        """
-        return LunarUtil.getXunKong(self.getGanZhi())
+  def getXunKong
+    # 获取旬空(空亡)
+    # :return: 旬空(空亡)
+    LunarUtil.getXunKong(getGanZhi)
+  end
+end
