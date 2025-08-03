@@ -1,32 +1,39 @@
 # -*- coding: utf-8 -*-
 
 
-class ShuJiu:
-    """
-    数九
-    """
+class ShuJiu
+  # 数九
 
-    def __init__(self, name, index):
-        self.__name = name
-        self.__index = index
+  def initialize(name, index)
+    @name = name
+    @index = index
+  end
 
-    def getName(self):
-        return self.__name
+  def getName
+    @name
+  end
 
-    def setName(self, name):
-        self.__name = name
+  def setName(name)
+    @name = name
+  end
 
-    def getIndex(self):
-        return self.__index
+  def getIndex
+    @index
+  end
 
-    def setIndex(self, index):
-        self.__index = index
+  def setIndex(index)
+    @index = index
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
 
-    def toString(self):
-        return self.__name
+  def toString
+    @name
+  end
 
-    def toFullString(self):
-        return "%s第%d天" % (self.__name, self.__index)
+  def toFullString
+    "%s第%d天" % [@name, @index]
+  end
+end

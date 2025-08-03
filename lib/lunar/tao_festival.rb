@@ -1,29 +1,35 @@
 # -*- coding: utf-8 -*-
 
 
-class TaoFestival:
-    """
-    道历节日
-    """
+class TaoFestival
+  # 道历节日
 
-    def __init__(self, name, remark=None):
-        self.__name = name
-        self.__remark = "" if remark is None else remark
+  def initialize(name, remark = nil)
+    @name = name
+    @remark = remark.nil? ? "" : remark
+  end
 
-    def getName(self):
-        return self.__name
+  def getName
+    @name
+  end
 
-    def getRemark(self):
-        return self.__remark
+  def getRemark
+    @remark
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
 
-    def toString(self):
-        return self.__name
+  def toString
+    @name
+  end
 
-    def toFullString(self):
-        s = self.__name
-        if self.__remark is not None and len(self.__remark) > 0:
-            s += "[" + self.__remark + "]"
-        return s
+  def toFullString
+    s = @name
+    if !@remark.nil? && @remark.length > 0
+      s += "[" + @remark + "]"
+    end
+    s
+  end
+end

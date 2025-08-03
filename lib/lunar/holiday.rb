@@ -1,52 +1,60 @@
 # -*- coding: utf-8 -*-
-class Holiday:
-    """
-    节假日
-    """
+class Holiday
+  # 节假日
 
-    def __init__(self, day, name, work, target):
-        """
-        初始化
-        :param day: 日期，YYYY-MM-DD格式
-        :param name: 名称，如：国庆
-        :param work: 是否调休，即是否要上班
-        :param target: 关联的节日，YYYY-MM-DD格式
-        """
-        self.__day = Holiday.__ymd(day)
-        self.__name = name
-        self.__work = work
-        self.__target = Holiday.__ymd(target)
+  def initialize(day, name, work, target)
+    # 初始化
+    # :param day: 日期，YYYY-MM-DD格式
+    # :param name: 名称，如：国庆
+    # :param work: 是否调休，即是否要上班
+    # :param target: 关联的节日，YYYY-MM-DD格式
+    @day = Holiday.ymd(day)
+    @name = name
+    @work = work
+    @target = Holiday.ymd(target)
+  end
 
-    @staticmethod
-    def __ymd(s):
-        return s if "-" in s else (s[0:4] + "-" + s[4:6] + "-" + s[6:])
+  def self.ymd(s)
+    s.include?("-") ? s : (s[0, 4] + "-" + s[4, 2] + "-" + s[6, 2])
+  end
 
-    def getDay(self):
-        return self.__day
+  def getDay
+    @day
+  end
 
-    def getName(self):
-        return self.__name
+  def getName
+    @name
+  end
 
-    def isWork(self):
-        return self.__work
+  def isWork
+    @work
+  end
 
-    def getTarget(self):
-        return self.__target
+  def getTarget
+    @target
+  end
 
-    def setDay(self, day):
-        self.__day = Holiday.__ymd(day)
+  def setDay(day)
+    @day = Holiday.ymd(day)
+  end
 
-    def setName(self, name):
-        self.__name = name
+  def setName(name)
+    @name = name
+  end
 
-    def setWork(self, work):
-        self.__work = work
+  def setWork(work)
+    @work = work
+  end
 
-    def setTarget(self, target):
-        self.__target = Holiday.__ymd(target)
+  def setTarget(target)
+    @target = Holiday.ymd(target)
+  end
 
-    def toString(self):
-        return "%s %s%s %s" % (self.__day, self.__name, "调休" if self.__work else "", self.__target)
+  def toString
+    "%s %s%s %s" % [@day, @name, @work ? "调休" : "", @target]
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
+end
