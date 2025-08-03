@@ -1,162 +1,174 @@
 # -*- coding: utf-8 -*-
-from math import ceil
 
-from . import Solar
-from .util import SolarUtil
+require_relative 'solar'
+require_relative 'util/solar_util'
 
 
-class SolarWeek:
-    """
-    阳历周
-    """
+class SolarWeek
+  # 阳历周
 
-    def __init__(self, year, month, day, start):
-        """
-        通过年月日初始化
-        :param year: 年
-        :param month: 月，1到12
-        :param day: 日，1到31
-        :param start: 星期几作为一周的开始，1234560分别代表星期一至星期天
-        """
-        self.__year = year
-        self.__month = month
-        self.__day = day
-        self.__start = start
+  def initialize(year, month, day, start)
+    # 通过年月日初始化
+    # :param year: 年
+    # :param month: 月，1到12
+    # :param day: 日，1到31
+    # :param start: 星期几作为一周的开始，1234560分别代表星期一至星期天
+    @year = year
+    @month = month
+    @day = day
+    @start = start
+  end
 
-    @staticmethod
-    def fromDate(date, start):
-        return SolarWeek(date.year, date.month, date.day, start)
+  def self.fromDate(date, start)
+    SolarWeek.new(date.year, date.month, date.day, start)
+  end
 
-    @staticmethod
-    def fromYmd(year, month, day, start):
-        return SolarWeek(year, month, day, start)
+  def self.fromYmd(year, month, day, start)
+    SolarWeek.new(year, month, day, start)
+  end
 
-    def getYear(self):
-        return self.__year
+  def getYear
+    @year
+  end
 
-    def getMonth(self):
-        return self.__month
+  def getMonth
+    @month
+  end
 
-    def getDay(self):
-        return self.__day
+  def getDay
+    @day
+  end
 
-    def getStart(self):
-        return self.__start
+  def getStart
+    @start
+  end
 
-    def toString(self):
-        return "%d.%d.%d" % (self.__year, self.__month, self.getIndex())
+  def toString
+    "%d.%d.%d" % [@year, @month, getIndex]
+  end
 
-    def toFullString(self):
-        return "%d年%d月第%d周" % (self.__year, self.__month, self.getIndex())
+  def toFullString
+    "%d年%d月第%d周" % [@year, @month, getIndex]
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
 
-    def getIndex(self):
-        """
-        获取当前日期是在当月第几周
-        :return: 周序号，从1开始
-        """
-        offset = Solar.fromYmd(self.__year, self.__month, 1).getWeek() - self.__start
-        if offset < 0:
-            offset += 7
-        return int(ceil((self.__day + offset) * 1.0 / 7))
+  def getIndex
+    # 获取当前日期是在当月第几周
+    # :return: 周序号，从1开始
+    offset = Solar.fromYmd(@year, @month, 1).getWeek - @start
+    if offset < 0
+      offset += 7
+    end
+    ((@day + offset) * 1.0 / 7).ceil.to_i
+  end
 
-    def getIndexInYear(self):
-        """
-        获取当前日期是在当年第几周
-        :return: 周序号，从1开始
-        """
-        offset = Solar.fromYmd(self.__year, 1, 1).getWeek() - self.__start
-        if offset < 0:
-            offset += 7
-        return int(ceil((SolarUtil.getDaysInYear(self.__year, self.__month, self.__day) + offset) * 1.0 / 7))
+  def getIndexInYear
+    # 获取当前日期是在当年第几周
+    # :return: 周序号，从1开始
+    offset = Solar.fromYmd(@year, 1, 1).getWeek - @start
+    if offset < 0
+      offset += 7
+    end
+    ((SolarUtil.getDaysInYear(@year, @month, @day) + offset) * 1.0 / 7).ceil.to_i
+  end
 
-    def getFirstDay(self):
-        """
-        获取本周第一天的阳历日期（可能跨月）
-        :return: 本周第一天的阳历日期
-        """
-        solar = Solar.fromYmd(self.__year, self.__month, self.__day)
-        prev = solar.getWeek() - self.__start
-        if prev < 0:
-            prev += 7
-        return solar.next(-prev)
+  def getFirstDay
+    # 获取本周第一天的阳历日期（可能跨月）
+    # :return: 本周第一天的阳历日期
+    solar = Solar.fromYmd(@year, @month, @day)
+    prev = solar.getWeek - @start
+    if prev < 0
+      prev += 7
+    end
+    solar.next(-prev)
+  end
 
-    def getFirstDayInMonth(self):
-        """
-        获取本周第一天的阳历日期（仅限当月）
-        :return: 本周第一天的阳历日期
-        """
-        for day in self.getDays():
-            if self.__month == day.getMonth():
-                return day
-        return None
+  def getFirstDayInMonth
+    # 获取本周第一天的阳历日期（仅限当月）
+    # :return: 本周第一天的阳历日期
+    getDays.each do |day|
+      if @month == day.getMonth
+        return day
+      end
+    end
+    nil
+  end
 
-    def getDays(self):
-        """
-        获取本周的阳历日期列表（可能跨月）
-        :return: 本周的阳历日期列表
-        """
-        days = []
-        first = self.getFirstDay()
-        days.append(first)
-        for i in range(1, 7):
-            days.append(first.next(i))
-        return days
+  def getDays
+    # 获取本周的阳历日期列表（可能跨月）
+    # :return: 本周的阳历日期列表
+    days = []
+    first = getFirstDay
+    days.push(first)
+    (1...7).each do |i|
+      days.push(first.next(i))
+    end
+    days
+  end
 
-    def getDaysInMonth(self):
-        """
-        获取本周的阳历日期列表（仅限当月）
-        :return: 本周的阳历日期列表（仅限当月）
-        """
-        days = []
-        for day in self.getDays():
-            if self.__month == day.getMonth():
-                days.append(day)
-        return days
+  def getDaysInMonth
+    # 获取本周的阳历日期列表（仅限当月）
+    # :return: 本周的阳历日期列表（仅限当月）
+    days = []
+    getDays.each do |day|
+      if @month == day.getMonth
+        days.push(day)
+      end
+    end
+    days
+  end
 
-    def next(self, weeks, separate_month):
-        """
-        周推移
-        :param weeks: 推移的周数，负数为倒推
-        :param separate_month: 是否按月单独计算
-        :return: 推移后的阳历周
-        """
-        if 0 == weeks:
-            return SolarWeek.fromYmd(self.__year, self.__month, self.__day, self.__start)
-        solar = Solar.fromYmd(self.__year, self.__month, self.__day)
-        if separate_month:
-            n = weeks
-            week = SolarWeek.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay(), self.__start)
-            month = self.__month
-            plus = n > 0
-            days = 7 if plus else -7
-            while 0 != n:
-                solar = solar.next(days)
-                week = SolarWeek.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay(), self.__start)
-                week_month = week.getMonth()
-                if month != week_month:
-                    index = week.getIndex()
-                    if plus:
-                        if 1 == index:
-                            first_day = week.getFirstDay()
-                            week = SolarWeek.fromYmd(first_day.getYear(), first_day.getMonth(), first_day.getDay(), self.__start)
-                            week_month = week.getMonth()
-                        else:
-                            solar = Solar.fromYmd(week.getYear(), week.getMonth(), 1)
-                            week = SolarWeek.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay(), self.__start)
-                    else:
-                        if SolarUtil.getWeeksOfMonth(week.getYear(), week.getMonth(), self.__start) == index:
-                            last_day = week.getFirstDay().next(6)
-                            week = SolarWeek.fromYmd(last_day.getYear(), last_day.getMonth(), last_day.getDay(), self.__start)
-                            week_month = week.getMonth()
-                        else:
-                            solar = Solar.fromYmd(week.getYear(), week.getMonth(), SolarUtil.getDaysOfMonth(week.getYear(), week.getMonth()))
-                            week = SolarWeek.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay(), self.__start)
-                    month = week_month
-                n -= 1 if plus else -1
-            return week
-        else:
-            solar = solar.next(weeks * 7)
-            return SolarWeek.fromYmd(solar.getYear(), solar.getMonth(), solar.getDay(), self.__start)
+  def next(weeks, separate_month)
+    # 周推移
+    # :param weeks: 推移的周数，负数为倒推
+    # :param separate_month: 是否按月单独计算
+    # :return: 推移后的阳历周
+    if 0 == weeks
+      return SolarWeek.fromYmd(@year, @month, @day, @start)
+    end
+    solar = Solar.fromYmd(@year, @month, @day)
+    if separate_month
+      n = weeks
+      week = SolarWeek.fromYmd(solar.getYear, solar.getMonth, solar.getDay, @start)
+      month = @month
+      plus = n > 0
+      days = plus ? 7 : -7
+      while 0 != n
+        solar = solar.next(days)
+        week = SolarWeek.fromYmd(solar.getYear, solar.getMonth, solar.getDay, @start)
+        week_month = week.getMonth
+        if month != week_month
+          index = week.getIndex
+          if plus
+            if 1 == index
+              first_day = week.getFirstDay
+              week = SolarWeek.fromYmd(first_day.getYear, first_day.getMonth, first_day.getDay, @start)
+              week_month = week.getMonth
+            else
+              solar = Solar.fromYmd(week.getYear, week.getMonth, 1)
+              week = SolarWeek.fromYmd(solar.getYear, solar.getMonth, solar.getDay, @start)
+            end
+          else
+            if SolarUtil.getWeeksOfMonth(week.getYear, week.getMonth, @start) == index
+              last_day = week.getFirstDay.next(6)
+              week = SolarWeek.fromYmd(last_day.getYear, last_day.getMonth, last_day.getDay, @start)
+              week_month = week.getMonth
+            else
+              solar = Solar.fromYmd(week.getYear, week.getMonth, SolarUtil.getDaysOfMonth(week.getYear, week.getMonth))
+              week = SolarWeek.fromYmd(solar.getYear, solar.getMonth, solar.getDay, @start)
+            end
+          end
+          month = week_month
+        end
+        n -= plus ? 1 : -1
+      end
+      week
+    else
+      solar = solar.next(weeks * 7)
+      SolarWeek.fromYmd(solar.getYear, solar.getMonth, solar.getDay, @start)
+    end
+  end
+end
