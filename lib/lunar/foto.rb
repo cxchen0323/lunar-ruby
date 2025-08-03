@@ -1,143 +1,180 @@
 # -*- coding: utf-8 -*-
-from . import Lunar, LunarMonth
-from .util import LunarUtil, FotoUtil
+require_relative 'lunar'
+require_relative 'lunar_month'
+require_relative 'util/lunar_util'
+require_relative 'util/foto_util'
 
 
-class Foto:
-    """
-    佛历
-    """
+class Foto
+  # 佛历
 
-    DEAD_YEAR = -543
+  DEAD_YEAR = -543
 
-    def __init__(self, lunar):
-        self.__lunar = lunar
+  def initialize(lunar)
+    @lunar = lunar
+  end
 
-    @staticmethod
-    def fromLunar(lunar):
-        return Foto(lunar)
+  def self.fromLunar(lunar)
+    Foto.new(lunar)
+  end
 
-    @staticmethod
-    def fromYmdHms(year, month, day, hour, minute, second):
-        return Foto.fromLunar(Lunar.fromYmdHms(year + Foto.DEAD_YEAR - 1, month, day, hour, minute, second))
+  def self.fromYmdHms(year, month, day, hour, minute, second)
+    Foto.fromLunar(Lunar.fromYmdHms(year + Foto::DEAD_YEAR - 1, month, day, hour, minute, second))
+  end
 
-    @staticmethod
-    def fromYmd(year, month, day):
-        return Foto.fromYmdHms(year, month, day, 0, 0, 0)
+  def self.fromYmd(year, month, day)
+    Foto.fromYmdHms(year, month, day, 0, 0, 0)
+  end
 
-    def getLunar(self):
-        return self.__lunar
+  def getLunar
+    @lunar
+  end
 
-    def getYear(self):
-        sy = self.__lunar.getSolar().getYear()
-        y = sy - Foto.DEAD_YEAR
-        if sy == self.__lunar.getYear():
-            y += 1
-        return y
+  def getYear
+    sy = @lunar.getSolar.getYear
+    y = sy - Foto::DEAD_YEAR
+    if sy == @lunar.getYear
+      y += 1
+    end
+    y
+  end
 
-    def getMonth(self):
-        return self.__lunar.getMonth()
+  def getMonth
+    @lunar.getMonth
+  end
 
-    def getDay(self):
-        return self.__lunar.getDay()
+  def getDay
+    @lunar.getDay
+  end
 
-    def getYearInChinese(self):
-        y = str(self.getYear())
-        s = ""
-        for i in range(0, len(y)):
-            s += LunarUtil.NUMBER[ord(y[i]) - 48]
-        return s
+  def getYearInChinese
+    y = getYear.to_s
+    s = ""
+    (0...y.length).each do |i|
+      s += LunarUtil::NUMBER[y[i].ord - 48]
+    end
+    s
+  end
 
-    def getMonthInChinese(self):
-        return self.__lunar.getMonthInChinese()
+  def getMonthInChinese
+    @lunar.getMonthInChinese
+  end
 
-    def getDayInChinese(self):
-        return self.__lunar.getDayInChinese()
+  def getDayInChinese
+    @lunar.getDayInChinese
+  end
 
-    def getFestivals(self):
-        festivals = []
-        md = "%d-%d" % (abs(self.getMonth()), self.getDay())
-        if md in FotoUtil.FESTIVAL:
-            fs = FotoUtil.FESTIVAL[md]
-            for f in fs:
-                festivals.append(f)
-        return festivals
+  def getFestivals
+    festivals = []
+    md = "#{getMonth.abs}-#{getDay}"
+    if FotoUtil::FESTIVAL.key?(md)
+      fs = FotoUtil::FESTIVAL[md]
+      fs.each do |f|
+        festivals.push(f)
+      end
+    end
+    festivals
+  end
 
-    def getOtherFestivals(self):
-        """
-        获取纪念日
-        :return: 非正式的节日列表，如中元节
-        """
-        festivals = []
-        key = "%d-%d" % (self.getMonth(), self.getDay())
-        if key in FotoUtil.OTHER_FESTIVAL:
-            for f in FotoUtil.OTHER_FESTIVAL[key]:
-                festivals.append(f)
-        return festivals
+  def getOtherFestivals
+    # 获取纪念日
+    # :return: 非正式的节日列表，如中元节
+    festivals = []
+    key = "#{getMonth}-#{getDay}"
+    if FotoUtil::OTHER_FESTIVAL.key?(key)
+      FotoUtil::OTHER_FESTIVAL[key].each do |f|
+        festivals.push(f)
+      end
+    end
+    festivals
+  end
 
-    def isMonthZhai(self):
-        m = self.getMonth()
-        return 1 == m or 5 == m or 9 == m
+  def isMonthZhai
+    m = getMonth
+    1 == m || 5 == m || 9 == m
+  end
 
-    def isDayYangGong(self):
-        for f in self.getFestivals():
-            if "杨公忌" == f.getName():
-                return True
-        return False
+  def isDayYangGong
+    getFestivals.each do |f|
+      if "杨公忌" == f.getName
+        return true
+      end
+    end
+    false
+  end
 
-    def isDayZhaiShuoWang(self):
-        d = self.getDay()
-        return 1 == d or 15 == d
+  def isDayZhaiShuoWang
+    d = getDay
+    1 == d || 15 == d
+  end
 
-    def isDayZhaiSix(self):
-        d = self.getDay()
-        if 8 == d or 14 == d or 15 == d or 23 == d or 29 == d or 30 == d:
-            return True
-        elif 28 == d:
-            m = LunarMonth.fromYm(self.__lunar.getYear(), self.getMonth())
-            return m is not None and 30 != m.getDayCount()
-        return False
+  def isDayZhaiSix
+    d = getDay
+    if 8 == d || 14 == d || 15 == d || 23 == d || 29 == d || 30 == d
+      return true
+    elsif 28 == d
+      m = LunarMonth.fromYm(@lunar.getYear, getMonth)
+      return !m.nil? && 30 != m.getDayCount
+    end
+    false
+  end
 
-    def isDayZhaiTen(self):
-        d = self.getDay()
-        return 1 == d or 8 == d or 14 == d or 15 == d or 18 == d or 23 == d or 24 == d or 28 == d or 29 == d or 30 == d
+  def isDayZhaiTen
+    d = getDay
+    1 == d || 8 == d || 14 == d || 15 == d || 18 == d || 23 == d || 24 == d || 28 == d || 29 == d || 30 == d
+  end
 
-    def isDayZhaiGuanYin(self):
-        k = "%d-%d" % (self.getMonth(), self.getDay())
-        for d in FotoUtil.DAY_ZHAI_GUAN_YIN:
-            if k == d:
-                return True
-        return False
+  def isDayZhaiGuanYin
+    k = "#{getMonth}-#{getDay}"
+    FotoUtil::DAY_ZHAI_GUAN_YIN.each do |d|
+      if k == d
+        return true
+      end
+    end
+    false
+  end
 
-    def getXiu(self):
-        return FotoUtil.getXiu(self.getMonth(), self.getDay())
+  def getXiu
+    FotoUtil.getXiu(getMonth, getDay)
+  end
 
-    def getXiuLuck(self):
-        return LunarUtil.XIU_LUCK[self.getXiu()]
+  def getXiuLuck
+    LunarUtil::XIU_LUCK[getXiu]
+  end
 
-    def getXiuSong(self):
-        return LunarUtil.XIU_SONG[self.getXiu()]
+  def getXiuSong
+    LunarUtil::XIU_SONG[getXiu]
+  end
 
-    def getZheng(self):
-        return LunarUtil.ZHENG[self.getXiu()]
+  def getZheng
+    LunarUtil::ZHENG[getXiu]
+  end
 
-    def getAnimal(self):
-        return LunarUtil.ANIMAL[self.getXiu()]
+  def getAnimal
+    LunarUtil::ANIMAL[getXiu]
+  end
 
-    def getGong(self):
-        return LunarUtil.GONG[self.getXiu()]
+  def getGong
+    LunarUtil::GONG[getXiu]
+  end
 
-    def getShou(self):
-        return LunarUtil.SHOU[self.getGong()]
+  def getShou
+    LunarUtil::SHOU[getGong]
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
 
-    def toString(self):
-        return "%s年%s月%s" % (self.getYearInChinese(), self.getMonthInChinese(), self.getDayInChinese())
+  def toString
+    "#{getYearInChinese}年#{getMonthInChinese}月#{getDayInChinese}"
+  end
 
-    def toFullString(self):
-        s = self.toString()
-        for f in self.getFestivals():
-            s += " (%s)" % f
-        return s
+  def toFullString
+    s = toString
+    getFestivals.each do |f|
+      s += " (#{f})"
+    end
+    s
+  end
+end

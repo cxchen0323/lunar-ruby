@@ -1,101 +1,111 @@
 # -*- coding: utf-8 -*-
-from . import XiaoYun, LiuNian
-from ..util import LunarUtil
+require_relative 'xiao_yun'
+require_relative 'liu_nian'
+require_relative '../util/lunar_util'
 
 
-class DaYun:
-    """
-    大运
-    """
+class DaYun
+  # 大运
 
-    def __init__(self, yun, index: int):
-        self.__yun = yun
-        self.__lunar = yun.getLunar()
-        self.__index = index
-        birth_year = yun.getLunar().getSolar().getYear()
-        year = yun.getStartSolar().getYear()
-        if index < 1:
-            self.__startYear = birth_year
-            self.__startAge = 1
-            self.__endYear = year - 1
-            self.__endAge = year - birth_year
-        else:
-            add = (index - 1) * 10
-            self.__startYear = year + add
-            self.__startAge = self.__startYear - birth_year + 1
-            self.__endYear = self.__startYear + 9
-            self.__endAge = self.__startAge + 9
+  def initialize(yun, index)
+    @yun = yun
+    @lunar = yun.getLunar
+    @index = index
+    birth_year = yun.getLunar.getSolar.getYear
+    year = yun.getStartSolar.getYear
+    if index < 1
+      @startYear = birth_year
+      @startAge = 1
+      @endYear = year - 1
+      @endAge = year - birth_year
+    else
+      add = (index - 1) * 10
+      @startYear = year + add
+      @startAge = @startYear - birth_year + 1
+      @endYear = @startYear + 9
+      @endAge = @startAge + 9
+    end
+  end
 
-    def getStartYear(self):
-        return self.__startYear
+  def getStartYear
+    @startYear
+  end
 
-    def getEndYear(self):
-        return self.__endYear
+  def getEndYear
+    @endYear
+  end
 
-    def getStartAge(self):
-        return self.__startAge
+  def getStartAge
+    @startAge
+  end
 
-    def getEndAge(self):
-        return self.__endAge
+  def getEndAge
+    @endAge
+  end
 
-    def getIndex(self):
-        return self.__index
+  def getIndex
+    @index
+  end
 
-    def getLunar(self):
-        return self.__lunar
+  def getLunar
+    @lunar
+  end
 
-    def getGanZhi(self):
-        """
-        获取干支
-        :return: 干支
-        """
-        if self.__index < 1:
-            return ""
-        offset = LunarUtil.getJiaZiIndex(self.__lunar.getMonthInGanZhiExact())
-        offset += self.__index if self.__yun.isForward() else -self.__index
-        size = len(LunarUtil.JIA_ZI)
-        if offset >= size:
-            offset -= size
-        if offset < 0:
-            offset += size
-        return LunarUtil.JIA_ZI[offset]
+  def getGanZhi
+    # 获取干支
+    # :return: 干支
+    if @index < 1
+      return ""
+    end
+    offset = LunarUtil.getJiaZiIndex(@lunar.getMonthInGanZhiExact)
+    offset += @yun.isForward ? @index : -@index
+    size = LunarUtil::JIA_ZI.length
+    if offset >= size
+      offset -= size
+    end
+    if offset < 0
+      offset += size
+    end
+    LunarUtil::JIA_ZI[offset]
+  end
 
-    def getXun(self):
-        """
-        获取所在旬
-        :return: 旬
-        """
-        return LunarUtil.getXun(self.getGanZhi())
+  def getXun
+    # 获取所在旬
+    # :return: 旬
+    LunarUtil.getXun(getGanZhi)
+  end
 
-    def getXunKong(self):
-        """
-        获取旬空(空亡)
-        :return: 旬空(空亡)
-        """
-        return LunarUtil.getXunKong(self.getGanZhi())
+  def getXunKong
+    # 获取旬空(空亡)
+    # :return: 旬空(空亡)
+    LunarUtil.getXunKong(getGanZhi)
+  end
 
-    def getLiuNian(self, n=10):
-        """
-        获取流年
-        :param n: 轮数
-        :return: 流年
-        """
-        if self.__index < 1:
-            n = self.__endYear - self.__startYear + 1
-        liu_nian = []
-        for i in range(0, n):
-            liu_nian.append(LiuNian(self, i))
-        return liu_nian
+  def getLiuNian(n = 10)
+    # 获取流年
+    # :param n: 轮数
+    # :return: 流年
+    if @index < 1
+      n = @endYear - @startYear + 1
+    end
+    liu_nian = []
+    (0...n).each do |i|
+      liu_nian.push(LiuNian.new(self, i))
+    end
+    liu_nian
+  end
 
-    def getXiaoYun(self, n=10):
-        """
-        获取小运
-        :param n: 轮数
-        :return: 小运
-        """
-        if self.__index < 1:
-            n = self.__endYear - self.__startYear + 1
-        xiao_yun = []
-        for i in range(0, n):
-            xiao_yun.append(XiaoYun(self, i, self.__yun.isForward()))
-        return xiao_yun
+  def getXiaoYun(n = 10)
+    # 获取小运
+    # :param n: 轮数
+    # :return: 小运
+    if @index < 1
+      n = @endYear - @startYear + 1
+    end
+    xiao_yun = []
+    (0...n).each do |i|
+      xiao_yun.push(XiaoYun.new(self, i, @yun.isForward))
+    end
+    xiao_yun
+  end
+end
