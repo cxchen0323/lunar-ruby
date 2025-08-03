@@ -1,54 +1,57 @@
 # -*- coding: utf-8 -*-
 
-from . import SolarMonth
+require_relative 'solar_month'
 
 
-class SolarYear:
-    """
-    阳历年
-    """
+class SolarYear
+  # 阳历年
 
-    MONTH_COUNT = 12
+  MONTH_COUNT = 12
 
-    def __init__(self, year):
-        self.__year = year
+  def initialize(year)
+    @year = year
+  end
 
-    @staticmethod
-    def fromDate(date):
-        return SolarYear(date.year)
+  def self.fromDate(date)
+    SolarYear.new(date.year)
+  end
 
-    @staticmethod
-    def fromYear(year):
-        return SolarYear(year)
+  def self.fromYear(year)
+    SolarYear.new(year)
+  end
 
-    def getYear(self):
-        return self.__year
+  def getYear
+    @year
+  end
 
-    def toString(self):
-        return str(self.__year)
+  def toString
+    @year.to_s
+  end
 
-    def toFullString(self):
-        return "%d年" % self.__year
+  def toFullString
+    "%d年" % @year
+  end
 
-    def __str__(self):
-        return self.toString()
+  def to_s
+    toString
+  end
 
-    def getMonths(self):
-        """
-        获取本年的阳历月列表
-        :return: 阳历月列表
-        """
-        months = []
-        m = SolarMonth.fromYm(self.__year, 1)
-        months.append(m)
-        for i in range(1, SolarYear.MONTH_COUNT):
-            months.append(m.next(i))
-        return months
+  def getMonths
+    # 获取本年的阳历月列表
+    # :return: 阳历月列表
+    months = []
+    m = SolarMonth.fromYm(@year, 1)
+    months.push(m)
+    (1...SolarYear::MONTH_COUNT).each do |i|
+      months.push(m.next(i))
+    end
+    months
+  end
 
-    def next(self, years):
-        """
-        获取往后推几年的阳历年，如果要往前推，则月数用负数
-        :param years: 年数
-        :return: 阳历年
-        """
-        return SolarYear.fromYear(self.__year + years)
+  def next(years)
+    # 获取往后推几年的阳历年，如果要往前推，则月数用负数
+    # :param years: 年数
+    # :return: 阳历年
+    SolarYear.fromYear(@year + years)
+  end
+end
